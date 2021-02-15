@@ -1,0 +1,106 @@
+Регистры Штрай
+
+ Coils
+0002  Start/stop totalizers
+            1 - Start
+            0 - Stop
+0003              RW           Reset all totalizers
+0004              RW           Reset all inventories
+0005              RW           Perform flowmeter zeroing
+0026              RO           Flowmeter zeroing failure
+0056              RW           Reset mass total
+0057              RW           Reset line volume (gross volume) total
+
+========================
+Floating-point register pairs
+
+0195 0196      RW        Mass flow cutoff
+
+0245 0246  0  -   регистр состояния-ошибок.
+                  131072 Flowmeter zeroing in progress
+                  8192 Flowmeter zeroing failure
+                  16384 Zero value too low
+                  32768 Zero value too high
+
+0247 0248  4     RO        Mass flow rate , т/час
+0249 0250  8     RO        Density , т/м3
+0251 0252  12    RO        Temperature
+0253 0254  16    RO        Volume flow rate,  л/час
+           20
+0257 0258  24    RO        Pressure (internally derived)
+0259 0260  28    RO        Mass total , кг
+0261 0262  32    RO        Volume total, м3
+0263 0264  36    RO        Mass inventory , кг
+0265 0266  40    RO        Volume inventory, м3
+
+0285 0286     RO        Raw tube frequency (Hz)
+0293 0294     RO        Mass flow live zero flow
+
+0x1042  Расход, кг/мин. или т/час float (IEEE754) только чтение
+0x1043
+
+0x1044  Плотность, т/м3         float (IEEE754) только чтение
+0x1045
+
+0x1046  Температура, С          float (IEEE754) только чтение
+0x1047
+
+4188+1=4189
+0x105C  Масштаб расхода        float (IEEE754)  чтение/запись
+0x105D
+
+4190+1=4191
+0x105E  Масштаб плотности      float (IEEE754)  чтение/запись
+0x105F
+
+====================
+
+
+Integer registers
+
+0008              RO          Mass total (scaled integer) to reset, write 0 to register.
+0009              RO          Volume total (scaled integer) to reset, write 0 to register.
+0010              RO          Mass inventory (scaled integer) to reset, write 0 to register.
+0011              RO          Volume inventory (scaled integer) to reset, write 0 to register.
+0018              RW         Maximum integer
+0025              RW          Mass total offset
+0026              RW          Volume total offset
+0027              RW          Mass inventory offset
+0028              RW          Volume inventory offset
+0035              RW          Mass total scale factor
+0036              RW          Volume total scale factor
+0037              RW          Mass inventory scale factor
+0038              RW          Volume inventory scale factor
+
+0039              RW          Standard or special mass flow unit
+0042              RW          Standard or special volume flow unit
+0045              RO          Standard or special mass total or inventory unit
+0046              RO          Standard or special volume total or inventory unit
+
+0120              RO          Device type code
+
+0521              RW          Floating-point byte order
+
+0x1005  Режим, в т.ч.         unsigned short int чтение/запись
+bit #15 (MSBit) резерв
+bit #14   резерв
+bit #13   резерв
+bit #12   Токовый вывод расхода или
+bit #11   Токовый вывод температуры или
+bit #10   Токовый вывод плотности
+bit #9    0-част. выход запрещен, 1-част. выход разрешен
+bit #8    0 - измерение, 1 - тестовый режим
+
+bit #7    размерность объема: 0 - л/час., 1 - м3/час
+bit #6    1 - расход в обе стороны
+
+bit #5    1 - прямое возбуждение без фильтра
+bit #4    0 - масса, 1 - объем
+bit #3    0 - измеренная, 1 - постоянная плотность
+
+bit #2    размерность расхода: 0 - кг/мин., 1 - т/час
+
+bit #1    0 - измерение, 1 - сброс сумматоров
+bit #0 (LSBit)  0 - измерение, 1 - коррекция >0<
+
+

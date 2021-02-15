@@ -1,0 +1,12 @@
+MD5 (nfd.exe) = c4cbdfeb9b0a04313387f463197c11d4
+
+
+
+nr_flg_n
+f_tst(int ii)
+{
+WriteNVRAM((int) nr_flg_n  ,ii );
+}
+char ch_tmp=0;
+ ch_tmp = ReadNVRAM( nr_flg_n);
+

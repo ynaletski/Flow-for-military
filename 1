@@ -1,0 +1,891 @@
+Сравнение файлов Dos_win.C1 и DOS_WIN.C
+***** Dos_win.C1
+// MMI_NEW 
+//#define ZeroPage 0
+***** DOS_WIN.C
+
+//#define ZeroPage 0
+*****
+
+***** Dos_win.C1
+
+     MmiGotoxy(15,8);
+#if(AIR_SW != 0)
+                  MmiPuts("Воздух  :");
+#endif
+***** DOS_WIN.C
+
+#if(AIR_SW != 0)
+                  MmiPuts("Воздух ");
+#endif
+*****
+
+***** Dos_win.C1
+#if(CUT_SW != 0)
+                  MmiPuts("Отсечка :");
+#endif
+     if( OUT_VAR & OUT4  )
+       MmiPuts("1  ");
+     else
+       MmiPuts("0  ");
+
+***** DOS_WIN.C
+#if(CUT_SW != 0)
+                  MmiPuts("CUT_SW ");
+#endif
+
+*****
+
+***** Dos_win.C1
+
+
+     MmiGotoxy(26,8);   MmiPuts("Н:");
+***** DOS_WIN.C
+
+     MmiGotoxy(26,8);   MmiPuts("Н:");
+*****
+
+***** Dos_win.C1
+    }
+    if( (itmp & OPN_H ) == OPN_H )
+    {
+***** DOS_WIN.C
+    }
+    if(itmp == OPN_H )
+    {
+*****
+
+***** Dos_win.C1
+    }
+    if( (itmp & OPN_L ) == OPN_L )
+    {
+***** DOS_WIN.C
+    }
+    if(itmp == OPN_L )
+    {
+*****
+
+***** Dos_win.C1
+    {
+//MmiGotoxy(0,i1++); MmiPrintf("Кнопка ES при отпуске");
+MmiGotoxy(0,i1++); MmiPrintf("Нет разрешения на налив");
+    if(i1 >= n_mmi_str) return;
+***** DOS_WIN.C
+    {
+MmiGotoxy(0,i1++); MmiPrintf("Кнопка ES при отпуске");
+    if(i1 >= n_mmi_str) return;
+*****
+
+***** Dos_win.C1
+  case evt_ES_off:
+//  MmiPrintf(" %s прерв.Авар.кнопкой ES",Rcv_mm[f_rcv]);
+    MmiPrintf(" %s прерв.Разреш.на налив",Rcv_mm[f_rcv]);
+    goto m_val;
+***** DOS_WIN.C
+  case evt_ES_off:
+    MmiPrintf(" %s прерв.Авар.кнопкой ES",Rcv_mm[f_rcv]);
+    goto m_val;
+*****
+
+***** Dos_win.C1
+  {
+#if(Shtray==0)
+  case 31:
+***** DOS_WIN.C
+  {
+  case 31:
+*****
+
+***** Dos_win.C1
+   k_dens=s_MVD[0].f;
+#else  // Shtray != 0
+
+ case 31:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr= 4189; //279; 
+   sw_mvd_m1=12;
+***** DOS_WIN.C
+   k_dens=s_MVD[0].f;
+
+   ff_serv=NULL;
+   Flag_f_corr=1;
+   break;
+ }
+}
+/* ---------------------------------------- */
+void f_MVD_M1s()
+{
+// отображает параметры коррекции расхода  MVD  на MMI
+  if((MVD_fn[0] != 0) && (MVD_fn[0] != F_FAULT))
+  {
+    if( f_timer(tm_mvd,f_MVD_tim ) )
+    {
+     MoveToXY(0,4); MmiPrintf(" !Таймаут чтения MVD");
+     ff_serv=NULL;
+    }
+    return;
+  }
+  tm_mvd=TimeStamp;
+  switch(sw_mvd_m1)
+  {
+  case 31:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=195;
+   sw_mvd_m1=12;
+*****
+
+***** Dos_win.C1
+   if(MVD_fn[0] != F_FAULT)
+   { MoveToXY(0,4);MmiPrintf("Множитель массы:    %.6f",s_MVD[0].f);}
+     k_m_flow=s_MVD[0].f;
+/*
+  case 32:
+***** DOS_WIN.C
+   if(MVD_fn[0] != F_FAULT)
+   { MoveToXY(0,4); MmiPrintf("Срез м. расх.: %8.2f кг/ч",s_MVD[0].f);}
+     k_m_flow=s_MVD[0].f;
+
+  case 32:
+*****
+
+***** Dos_win.C1
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=281; // Множитель объема
+
+   sw_mvd_m1=13;
+***** DOS_WIN.C
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=197;  // Cuttoff for mass flow
+   sw_mvd_m1=13;
+*****
+
+***** Dos_win.C1
+   if(MVD_fn[0] != F_FAULT)
+  { MoveToXY(0,5);MmiPrintf("Множитель объема:   %.6f",s_MVD[0].f);}
+// { MoveToXY(0,5); MmiPrintf("Срез м.расх.: %10.2f кг/ч",s_MVD[0].f);}
+   k_v_flow=s_MVD[0].f;
+*/
+   k_v_flow=1.0;
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=4191; //283; // Множитель объема
+   sw_mvd_m1=14;
+   break;
+
+  case 14:
+   if(MVD_fn[0] != F_FAULT)
+  { MoveToXY(0,6);MmiPrintf("Множитель плотн.:   %.6f",s_MVD[0].f);}
+   k_dens=s_MVD[0].f;
+
+
+#endif
+
+
+
+   ff_serv=NULL;
+***** DOS_WIN.C
+   if(MVD_fn[0] != F_FAULT)
+   { MoveToXY(0,5); MmiPrintf("Срез об.расх.: %8.3f л/сек",s_MVD[0].f);}
+   k_v_flow=s_MVD[0].f;
+   ff_serv=NULL;
+*****
+
+***** Dos_win.C1
+/* ---------------------------------------- */
+void f_MVD_M1s()
+{
+// отображает параметры коррекции расхода  MVD  на MMI
+  if((MVD_fn[0] != 0) && (MVD_fn[0] != F_FAULT))
+***** DOS_WIN.C
+/* ---------------------------------------- */
+/* ---------------------------------------- */
+char *unit1=NULL;//I39
+char *unit2=NULL;//I45
+char *unit3=NULL;//42 // Volume flow codes
+char *unit4=NULL;// Volume totalizer or volume inventory codes I 0046
+char *unit5=NULL;// Density codes I0040
+char *unit6=NULL;// Temperature codes I0041
+float MMITemp,MMIDens,MMICompos;
+void f_MVD_M2()
+{
+char *unit;
+int u_cod;
+// отображает данные MVD
+
+        ff_serv=NULL;
+/*
+  if((MVD_fn[0] != 0) && (MVD_fn[0] != F_FAULT))
+*****
+
+***** Dos_win.C1
+    {
+     MoveToXY(0,4); MmiPrintf(" !Таймаут чтения MVD");
+     ff_serv=NULL;
+    }
+***** DOS_WIN.C
+    {
+   MoveToXY(0,sw_MMI_cur); MmiPrintf(" !Таймаут чтения MVD");
+        ff_serv=NULL;
+    }
+*****
+
+***** Dos_win.C1
+  {
+  case 31:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=195;
+   sw_mvd_m1=12;
+   break;
+***** DOS_WIN.C
+  {
+  case 20:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr=39; // I039 Mass flow codes
+   s_MVD[0].i=-1;
+   sw_mvd_m1=1;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 12:
+   if(MVD_fn[0] != F_FAULT)
+   { MoveToXY(0,4); MmiPrintf("Срез м. расх.: %8.2f кг/ч",s_MVD[0].f);}
+     k_m_flow=s_MVD[0].f;
+
+#if(Shtray == 0)
+  case 32:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=197;  // Cuttoff for mass flow
+   sw_mvd_m1=13;
+   break;
+***** DOS_WIN.C
+
+  case 1:
+   u_cod=s_MVD[0].i;
+    if(u_cod>0)  unit1=f_get_unit(u_cod);
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=247;
+   sw_mvd_m1++;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 13:
+   if(MVD_fn[0] != F_FAULT)
+   { MoveToXY(0,5); MmiPrintf("Срез об.расх.: %8.3f л/сек",s_MVD[0].f);}
+   k_v_flow=s_MVD[0].f;
+#else
+   k_v_flow=0;
+
+#endif
+   ff_serv=NULL;
+   Flag_f_corr=1;
+   break;
+ }
+}
+/* ---------------------------------------- */
+/* ---------------------------------------- */
+char *unit1=NULL;//I39
+char *unit2=NULL;//I45
+char *unit3=NULL;//42 // Volume flow codes
+char *unit4=NULL;// Volume totalizer or volume inventory codes I 0046
+char *unit5=NULL;// Density codes I0040
+char *unit6=NULL;// Temperature codes I0041
+float MMITemp,MMIDens,MMICompos;
+void f_MVD_M2()
+{
+char *unit;
+int u_cod;
+// отображает данные MVD
+
+        ff_serv=NULL;
+/*
+  if((MVD_fn[0] != 0) && (MVD_fn[0] != F_FAULT))
+  {
+    if( f_timer(tm_mvd,f_MVD_tim ) )
+    {
+   MoveToXY(0,sw_MMI_cur); MmiPrintf(" !Таймаут чтения MVD");
+        ff_serv=NULL;
+    }
+    return;
+  }
+  tm_mvd=TimeStamp;
+  switch(sw_mvd_m1)
+  {
+  case 20:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr=39; // I039 Mass flow codes
+   s_MVD[0].i=-1;
+   sw_mvd_m1=1;
+   break;
+***** DOS_WIN.C
+
+  case 2:
+  if(MVD_fn[0] != F_FAULT)
+  {
+   if(unit1 != NULL)
+    { MoveToXY(0,sw_MMI_cur++);MmiPrintf("Расход м. : %f %s",s_MVD[0].f,unit1);}
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+  }
+
+  case 21:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr=45; // Mass totalizer or mass inventory unit codes I 0045
+   s_MVD[0].i=-1;
+   sw_mvd_m1=3;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 1:
+   u_cod=s_MVD[0].i;
+    if(u_cod>0)  unit1=f_get_unit(u_cod);
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=247;
+   sw_mvd_m1++;
+***** DOS_WIN.C
+
+  case 3:
+   u_cod=s_MVD[0].i;
+    if(u_cod>0)  unit2=f_get_unit(u_cod);
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=259;
+   sw_mvd_m1++;
+*****
+
+***** Dos_win.C1
+
+  case 2:
+  if(MVD_fn[0] != F_FAULT)
+***** DOS_WIN.C
+
+  case 4:
+  if(MVD_fn[0] != F_FAULT)
+*****
+
+***** Dos_win.C1
+  {
+   if(unit1 != NULL)
+    { MoveToXY(0,sw_MMI_cur++);MmiPrintf("Расход м. : %f %s",s_MVD[0].f,unit1);}
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+***** DOS_WIN.C
+  {
+   if(unit2 != NULL)
+    { MoveToXY(0,sw_MMI_cur++);MmiPrintf("Масса общ.: %10.3f %s",s_MVD[0].f,unit2);}
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+*****
+
+***** Dos_win.C1
+  }
+
+  case 21:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr=45; // Mass totalizer or mass inventory unit codes I 0045
+   s_MVD[0].i=-1;
+   sw_mvd_m1=3;
+   break;
+***** DOS_WIN.C
+  }
+  case 22:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=263;
+   sw_mvd_m1=5;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 3:
+   u_cod=s_MVD[0].i;
+    if(u_cod>0)  unit2=f_get_unit(u_cod);
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=259;
+   sw_mvd_m1++;
+   break;
+
+  case 4:
+  if(MVD_fn[0] != F_FAULT)
+***** DOS_WIN.C
+
+  case 5:
+  if(MVD_fn[0] != F_FAULT)
+*****
+
+***** Dos_win.C1
+   if(unit2 != NULL)
+    { MoveToXY(0,sw_MMI_cur++);MmiPrintf("Масса общ.: %10.3f %s",s_MVD[0].f,unit2);}
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+***** DOS_WIN.C
+   if(unit2 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Масса инв.: %10.2f %s",s_MVD[0].f,unit2); }
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+*****
+
+***** Dos_win.C1
+  }
+  case 22:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=263;
+   sw_mvd_m1=5;
+   break;
+***** DOS_WIN.C
+  }
+  case 23:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr= 42 ; // Volume flow codes I0042
+   s_MVD[0].i=-1;
+   sw_mvd_m1=6;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 5:
+  if(MVD_fn[0] != F_FAULT)
+***** DOS_WIN.C
+
+  case 6:
+   u_cod=s_MVD[0].i;
+   if(u_cod>0)  unit3=f_get_unit(u_cod);
+
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=253;
+   sw_mvd_m1++;
+   break;
+
+  case 7:
+  if(MVD_fn[0] != F_FAULT)
+*****
+
+***** Dos_win.C1
+  {
+   if(unit2 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Масса инв.: %10.2f %s",s_MVD[0].f,unit2); }
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+  }
+  case 23:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr= 42 ; // Volume flow codes I0042
+   s_MVD[0].i=-1;
+   sw_mvd_m1=6;
+   break;
+***** DOS_WIN.C
+  {
+   if(unit3 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Расход об.: %f %s",s_MVD[0].f,unit3);}
+     if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+  }
+  case 24:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr= 46 ; // Volume totalizer or volume inventory codes I 0046
+   s_MVD[0].i=-1;
+   sw_mvd_m1=8;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 6:
+   u_cod=s_MVD[0].i;
+   if(u_cod>0)  unit3=f_get_unit(u_cod);
+
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=253;
+   sw_mvd_m1++;
+***** DOS_WIN.C
+
+  case 8:
+   u_cod=s_MVD[0].i;
+   if(u_cod>0)  unit4=f_get_unit(u_cod);
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=261;
+   sw_mvd_m1++;
+*****
+
+***** Dos_win.C1
+
+  case 7:
+  if(MVD_fn[0] != F_FAULT)
+***** DOS_WIN.C
+
+  case 9:
+  if(MVD_fn[0] != F_FAULT)
+*****
+
+***** Dos_win.C1
+  {
+   if(unit3 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Расход об.: %f %s",s_MVD[0].f,unit3);}
+     if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+***** DOS_WIN.C
+  {
+   if(unit4 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Объем общ.: %10.3f %s",s_MVD[0].f,unit4);}
+     if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+*****
+
+***** Dos_win.C1
+  }
+  case 24:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr= 46 ; // Volume totalizer or volume inventory codes I 0046
+   s_MVD[0].i=-1;
+   sw_mvd_m1=8;
+   break;
+***** DOS_WIN.C
+  }
+  case 25:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=265;
+   sw_mvd_m1=10;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 8:
+   u_cod=s_MVD[0].i;
+   if(u_cod>0)  unit4=f_get_unit(u_cod);
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=261;
+   sw_mvd_m1++;
+   break;
+
+  case 9:
+  if(MVD_fn[0] != F_FAULT)
+***** DOS_WIN.C
+
+  case 10:
+  if(MVD_fn[0] != F_FAULT)
+*****
+
+***** Dos_win.C1
+   if(unit4 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Объем общ.: %10.3f %s",s_MVD[0].f,unit4);}
+     if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+  }
+  case 25:
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=265;
+   sw_mvd_m1=10;
+   break;
+***** DOS_WIN.C
+   if(unit4 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Объем инв.: %10.2f %s",s_MVD[0].f,unit4);}
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+  }
+  case 26:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr= 40 ; // Density codes I0040
+   s_MVD[0].i=-1;
+   sw_mvd_m1=11;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 10:
+  if(MVD_fn[0] != F_FAULT)
+  {
+   if(unit4 != NULL)
+     {MoveToXY(0,sw_MMI_cur++);MmiPrintf("Объем инв.: %10.2f %s",s_MVD[0].f,unit4);}
+   if(sw_MMI_cur>=sw_MMI_lim)  {ff_serv=NULL;break;};
+  }
+  case 26:
+   MVD_fn[0]=MVD_RD_I;
+   s_MVD[0].r_addr= 40 ; // Density codes I0040
+   s_MVD[0].i=-1;
+   sw_mvd_m1=11;
+   break;
+***** DOS_WIN.C
+
+  case 11:
+   u_cod=s_MVD[0].i;
+   if(u_cod>0)
+   {
+     unit5=f_get_unit(u_cod);
+//     printf("\n\r density unit :%s",unit5);
+   }
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=249;
+   sw_mvd_m1++;
+   break;
+*****
+
+***** Dos_win.C1
+
+  case 11:
+   u_cod=s_MVD[0].i;
+   if(u_cod>0)
+   {
+     unit5=f_get_unit(u_cod);
+//     printf("\n\r density unit :%s",unit5);
+   }
+   MVD_fn[0]=MVD_RD_F;
+   s_MVD[0].r_addr=249;
+   sw_mvd_m1++;
+   break;
+
+  case 12:
+***** DOS_WIN.C
+
+  case 12:
+*****
+
+***** Dos_win.C1
+"Флаг прокачки",         //  2
+
+#if defined(PMP_LG)
+"PMP delay,0.1s",         //  3
+"PMP on flag",          //  4
+#else
+"",         //  3
+***** DOS_WIN.C
+"Флаг прокачки",         //  2
+"",         //  3
+*****
+
+***** Dos_win.C1
+"",          //  4
+#endif
+"MMI:Флаг CRC",               //  5
+***** DOS_WIN.C
+"",          //  4
+"MMI:Флаг CRC",               //  5
+*****
+
+***** Dos_win.C1
+  //      MmiGotoxy(15,3);
+#if defined(MMI_ICP)
+          SetDisplayPage(15); // ттюф чэрўхэш 
+#endif
+
+#if defined(MMI_NEW)
+          SetDisplayPage(2); // ттюф чэрўхэш 
+#endif
+
+
+          break;
+***** DOS_WIN.C
+  //      MmiGotoxy(15,3);
+          SetDisplayPage(15); // ввод значения
+          break;
+*****
+
+***** Dos_win.C1
+          MmiGotoxy(15,3);
+#if defined(MMI_ICP)
+          SetDisplayPage(15); // ттюф чэрўхэш 
+#endif
+
+#if defined(MMI_NEW)
+          SetDisplayPage(2); // ттюф чэрўхэш 
+#endif
+
+          break;
+***** DOS_WIN.C
+          MmiGotoxy(15,3);
+          SetDisplayPage(15); // ввод значения
+          break;
+*****
+
+***** Dos_win.C1
+           PageD=0;
+           SetDisplayPage(ZeroPage);
+***** DOS_WIN.C
+           PageD=0;
+//         SetDisplayPage(6);
+           SetDisplayPage(ZeroPage);
+*****
+
+***** Dos_win.C1
+         f_clr_scr_MMI();
+// MmiGotoxy(0,0); MmiPrintf(" Состояния аналоговых входов:");
+  MmiGotoxy(0,0);  MmiPrintf("АСН %d. Состояния входов:",n_ASN);
+***** DOS_WIN.C
+         f_clr_scr_MMI();
+   MmiGotoxy(0,0); MmiPrintf(" Состояния аналоговых входов:");
+  MmiGotoxy(0,0);  MmiPrintf("АСН %d. Состояния входов:",n_ASN);
+*****
+
+***** Dos_win.C1
+            MmiGotoxy(0,1);    MmiPuts("1 Коррекция массового расхода");
+#if(Shtray==0)
+            MmiGotoxy(0,2);    MmiPuts("2 Коррекция объемного расхода");
+#endif
+            MmiGotoxy(0,3);    MmiPuts("3 Множитель плотности");
+***** DOS_WIN.C
+            MmiGotoxy(0,1);    MmiPuts("1 Коррекция массового расхода");
+            MmiGotoxy(0,2);    MmiPuts("2 Коррекция объемного расхода");
+            MmiGotoxy(0,3);    MmiPuts("3 Множитель плотности");
+*****
+
+***** Dos_win.C1
+       {
+#if(Shtray==0)
+          if(PassW != Password)
+***** DOS_WIN.C
+       {
+          if(PassW != Password)
+*****
+
+***** Dos_win.C1
+          goto m_m9_1_1;
+#else
+m_m9_2:
+                  break;
+#endif
+
+       }
+***** DOS_WIN.C
+          goto m_m9_1_1;
+       }
+*****
+
+***** Dos_win.C1
+      // введенное значение в k_mv_tmp
+
+#if(Shtray==0)
+          if(flag_mass==1)
+***** DOS_WIN.C
+      // введенное значение в k_mv_tmp
+          if(flag_mass==1)
+*****
+
+***** Dos_win.C1
+          goto m_m9;
+
+#else  // Shtray != 0
+          if(flag_mass==1)
+          {
+           s_MVD[0].r_addr=   4189; //279; // Множитель массы.
+
+           chg_nn_par=Par_MF;
+           chg_old=k_m_flow;
+           chg_new= k_mv_tmp;
+           f_wr_evt(evt_chg_param);
+          }
+          else if(flag_mass==2)
+          {
+           s_MVD[0].r_addr= 4191; //283; // Множитель плотности
+
+           chg_nn_par=Par_DN;
+           chg_old=k_dens;
+           chg_new= k_mv_tmp;
+           f_wr_evt(evt_chg_param);
+          }
+          else
+          {
+           goto m_m9;
+          }
+          MVD_fn[0]=MVD_WR_F;
+          s_MVD[0].f = k_mv_tmp;
+          goto m_m9;
+
+#endif
+
+
+        }
+***** DOS_WIN.C
+          goto m_m9;
+        }
+*****
+
+***** Dos_win.C1
+       {
+#if(Shtray==0)             
+          if(PassW != Password)
+***** DOS_WIN.C
+       {
+          if(PassW != Password)
+*****
+
+***** Dos_win.C1
+          goto m_m9s_1_1;
+#else
+
+m_m9s_2:
+         break;
+#endif
+       }
+***** DOS_WIN.C
+          goto m_m9s_1_1;
+       }
+*****
+
+***** Dos_win.C1
+        // переход в меню выбора точки для просмотра параметров
+          sw_mmi=11;
+***** DOS_WIN.C
+        // переход в меню выбора точки для просмотра параметров
+//          SetDisplayPage(11);
+          sw_mmi=11;
+*****
+
+***** Dos_win.C1
+
+
+ //    MmiGotoxy(0,4);  MmiPrintf("Объем отп.  %9.2f л  ",s_MVD[0].VolT);  // VolT_id, VolT_int
+ //    MmiGotoxy(0,6);MmiPrintf("Масса отп.  %9.2f кг ",s_MVD[0].MassT);  // VolT_id, VolT_int
+
+       MmiGotoxy(0,4);  MmiPrintf("Объем отп.,л");  // VolT_id, VolT_int
+           MmiGotoxy(0,6);  MmiPrintf("Масса отп.,кг");  // VolT_id, VolT_int
+
+        //        Z X  Y    L   Font
+  //      SetZone(0,14,30  ,8 , WIN12);
+          SetZone(0,14,32  ,8 , WIN8 );
+  //      SetZone(0,14,30  ,8 , WIN12);
+          SetZone(1,14,48  ,8 , WIN8 );
+
+          if(flag_prn_mass)  // WWWWW
+          {
+***** DOS_WIN.C
+
+          if(flag_prn_mass)
+          {
+*****
+
+***** Dos_win.C1
+
+        //        Z X
+          Z_MvToX(0,0);
+          MmiPrintf("%8.2f",s_MVD[0].VolT);
+          Z_MvToX(1,0);
+          MmiPrintf("%8.2f",s_MVD[0].MassT);
+
+          }
+***** DOS_WIN.C
+
+       MmiGotoxy(0,4);  MmiPrintf("Объем отп.  %9.2f л  ",s_MVD[0].VolT);  // VolT_id, VolT_int
+       MmiGotoxy(0,6);  MmiPrintf("Масса отп.  %9.2f кг ",s_MVD[0].MassT);  // VolT_id, VolT_int
+          }
+*****
+
+***** Dos_win.C1
+          {
+          Z_MvToX(0,0);
+          MmiPrintf("%8.2f",(float)0.);
+          Z_MvToX(1,0);
+          MmiPrintf("%8.2f",(float)0.);
+//     MmiGotoxy(0,4);  MmiPrintf("Объем отп.  %9.2f л  ",(float)0.);  // VolT_id, VolT_int
+//     MmiGotoxy(0,6);  MmiPrintf("Масса отп.  %9.2f кг ",(float)0.);  // VolT_id, VolT_int
+          }
+***** DOS_WIN.C
+          {
+       MmiGotoxy(0,4);  MmiPrintf("Объем отп.  %9.2f л  ",(float)0.);  // VolT_id, VolT_int
+       MmiGotoxy(0,6);  MmiPrintf("Масса отп.  %9.2f кг ",(float)0.);  // VolT_id, VolT_int
+          }
+*****
+
+***** Dos_win.C1
+         MmiPuts( str_empt );
+  MmiGotoxy(0,0);  MmiPrintf("АСН%d.",n_ASN);
+         MmiGotoxy(5,0);
+***** DOS_WIN.C
+         MmiPuts( str_empt );
+  MmiGotoxy(0,0);  MmiPrintf("АСН %d.",n_ASN);
+         MmiGotoxy(5,0);
+*****
+
