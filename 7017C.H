@@ -24,6 +24,7 @@ extern float P_inp;
 //15.02.2021 YN
 extern float P_before;
 extern float P_after;
-
+extern float P_diff;
+extern int Filter_for_slave;
 
 

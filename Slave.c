@@ -294,6 +294,10 @@ void *list_Slv_int[]={
 
 &Password,        // 169
 &Password_m,        // 170
+
+//15.02.2021 YN
+&Filter_for_slave, //171 Ошибка по фильтру / 1 - забит / 0 - норм
+
 NULL                //
 
 };

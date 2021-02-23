@@ -308,6 +308,12 @@ int fl_err_new;
         case ID_E  :
                Reg_err = ID_sb;
                break;
+
+        //23.02.2021 YN 
+        case FILTER  :
+               Reg_err = CONS_sb;
+               break;        
+
         default : break;
        }
       }

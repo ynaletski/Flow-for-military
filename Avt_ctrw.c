@@ -83,6 +83,8 @@ int num_in12 = 3;    //  STRT_IN_L
 int num_in13 =1;     //  O_SH_IN
 int num_in14 = 0;    //  Клапан нижнего налива закрыт
 int num_in15 = 0;    //  Клапан верхнего налива закрыт
+//23.02.2021 YN 
+int num_in16  = 5;   //  FILTER_FULL
 
 //---------------------------
   // Дискретные входы-выходы
@@ -164,6 +166,8 @@ int *num_pnt[KOL_D_INP+1]={&fict_npn,
 &num_in1,&num_in2,&num_in3,&num_in4,&num_in5,&num_in6,&num_in7,&num_in8,
 &num_in9,&num_in10,&num_in11,&num_in12,&num_in13,
 &num_in14,&num_in15,
+//23.02.2021 YN 
+&num_in16,
 //&num_in16,&num_in17,&num_in18,
 };
 //---------------------------
@@ -202,7 +206,9 @@ int itmp=0;
 
    if(CONS_IN   ) itmp |=0x10; //D4   - консоль,                            1 - ok
    if(TRAP_IN   ) itmp |=0x20; //D5   - трап,                               1 - ok
-// if(          ) itmp |=0x40; //D6 = 0
+   //23.02.2021 YN
+   if(FILTER_FULL) itmp |=0x40;//D6   - наличие среды в фильтре             1 - ok
+   ////////////////
    if(LVL_IN_L  ) itmp |=0x80; //D7 = - контроллер ограничения наполнения нижнего налива, 1 - ok
 
    if(STRT_IN_L ) itmp |=0x100;//D8   - кнопка "Start" нижнего налива       1 - кнопка нажата
@@ -361,6 +367,10 @@ char list_avt[][32]={
 "     Нажата кнопка =STOP=     ",//33
 "       ID не корректен        ",//34
 "       по команде Host        ",//35
+//23.02.2021 YN
+"     Система не заполнена     ",//36
+//15.02.2021 YN 
+"      Засорение фильтра       ",//37
 };
 
 char *list_rcv[]={
@@ -387,6 +397,12 @@ int Flag_dns_flow=0;
 int key__1=0;
 int f_dlv_liq(int key)
 {
+   //15.02.2021 YN
+   if(Filter_for_slave)
+   {
+      MmiGotoxy(0,1);    MmiPuts(list_avt[37]);    //"      Засорение фильтра       "
+   }
+
 // подготовка к отпуску и отпуск жидкой фазы
 //
 //  если key == ESC - останов потока , после завершения процедуры
@@ -589,6 +605,17 @@ m_err:
        MmiGotoxy(0,1);    MmiPuts(list_avt[14]);
        goto m_err;
     }
+
+//23.02.2021 YN
+   if( (FILTER_FULL)==0 )
+    {
+       flagE_UZA=FILTER;
+       f_icp_errS(UZA_off);
+//     MmiGotoxy(0,1);    MmiPuts("    Система не заполнена   ");
+       MmiGotoxy(0,1);    MmiPuts(list_avt[36]);
+       goto m_err;
+    }
+
   }
  else
  {  // нижний налив
@@ -632,7 +659,15 @@ m_err:
        MmiGotoxy(0,1);    MmiPuts(list_avt[9]);
        goto m_err;
     }
-
+//23.02.2021 YN
+   if( (FILTER_FULL)==0 )
+    {
+       flagE_UZA=FILTER;
+       f_icp_errS(UZA_off);
+//     MmiGotoxy(0,1);    MmiPuts("    Система не заполнена   ");
+       MmiGotoxy(0,1);    MmiPuts(list_avt[36]);
+       goto m_err;
+    }
  }
 
     sw_dlv_liq=3;
@@ -1362,8 +1397,16 @@ m_err1:
            flagS_ES=1;
            f_icp_errS(ES_off);
            goto m_err1;
-
         }
+
+        //23.02.2021 YN
+       if( (FILTER_FULL)==0 )
+        {
+           flagE_UZA=FILTER;
+           goto m_err;
+        }
+        ////////////////
+
     }
    }
    else
@@ -1395,6 +1438,13 @@ m_err1:
            flagE_UZA=LVL_E;
            goto m_err;
         }
+        //23.02.2021 YN
+       if( (FILTER_FULL)==0 )
+        {
+           flagE_UZA=FILTER;
+           goto m_err;
+        }
+        ////////////////
      }
    }
   }

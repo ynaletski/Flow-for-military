@@ -7,6 +7,8 @@
 //15.02.2021 YN
 float P_before;
 float P_after;
+float P_diff;
+int Filter_for_slave=0;
 
 //---------------
 struct s_icp_dev I7017C[max_7017]=
@@ -220,6 +222,8 @@ m1:
              { // без таблицы тарировки
               ftmp=dat_i[itmp];
               ADC[1]= ftmp;
+
+
 #if defined(BIO_1)
               P_inp= ftmp * analog_scale[1] + analog_offset[1];
 #else
@@ -244,6 +248,17 @@ m1:
              ftmp=dat_i[itmp];
              ADC[3]= ftmp;
              P_after= ftmp * analog_scale[3] + analog_offset[3];
+           }
+
+           P_diff = P_before - P_after;
+
+           if( P_diff > 0.05)
+           {
+             Filter_for_slave = 1;
+           }
+           else
+           {
+             Filter_for_slave = 0;
            }
 
 

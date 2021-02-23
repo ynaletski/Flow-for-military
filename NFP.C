@@ -604,6 +604,8 @@ void main(void)
      //15.02.2021 YN
      P_before= analog_offset[2];
      P_after= analog_offset[3];
+     P_diff= 0.0;
+     Filter_for_slave =0;
   }
 
   if( fabs(CL_val[1]) > Cor_max) CL_val[1]=0;
@@ -611,6 +613,29 @@ void main(void)
 
   InstallUserTimerFunction_us(10000,fun_tim_u);
 
+  ///171219 VI
+  // Для устранения ошибки по задвижке при первом включении
+  // устанавливаются начальные безаварийные значения
+  // сигналов датчиков закрытого состояния задвижек
+  // IN_CLS_L( f_ik(14)), IN_CLS_H ( f_ik(15)).
+  // После первого чтения из устройства ввода-вывода
+  // значения обновятся до реального состояния.
+
+i=14; // IN_CLS_L
+j=*num_pnt[i];
+if( iv_msk[i] == 0)
+ *(int *)p_ik[j] |= msk_ik[j];
+else
+ *(int *)p_ik[j] &= ~msk_ik[j];
+
+i=15; // IN_CLS_H
+j=*num_pnt[i];
+if( iv_msk[i] == 0)
+ *(int *)p_ik[j] |= msk_ik[j];
+else
+ *(int *)p_ik[j] &= ~msk_ik[j];
+
+/////////////////////////////
 
   while(1)
   {
@@ -1435,6 +1460,22 @@ struct dis_set_MMI ds_list1[]=
   0,
   1,
   T_INT,
+
+//23.02.2021 YN
+  list1_dsr,
+  172,               // "Сгн.'Фильтр' N вх."
+  &num_in16,
+  0,
+  KOL_INP,
+  T_INT,
+//-----------
+  list1_dsr,
+  173,               // "Сгн.'Фильтр' фл.инв"
+  &mski_inp16,
+  0,
+  8,
+  T_INT,
+
 //-----------
 //-----------
   NULL,

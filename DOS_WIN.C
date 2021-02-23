@@ -251,6 +251,17 @@ int i;
                 }
               }
 
+              //23.02.2021 YN
+              if( FILTER_FULL==0)
+              {
+               if((i+8)< 30)
+                {
+                 MmiGotoxy(i,row); MmiPuts(" Ф-Рпуст");
+                 i+=8;
+                }
+              }        
+              ///////////////      
+
     if( valve_mode != 0)
     {
               if( ES_IN_L==0)
@@ -345,6 +356,17 @@ int i;
                 i+=4;
                }
               }
+
+              //23.02.2021 YN
+              if( FILTER_FULL==0)
+              {
+               if((i+8)< 30)
+                {
+                 MmiGotoxy(i,row); MmiPuts(" Ф-Рпуст");
+                 i+=8;
+                }
+              }        
+              ///////////////                 
 
     if( valve_modeL != 0)
     {
@@ -775,6 +797,14 @@ MmiGotoxy(0,i1++); MmiPrintf("Трап не в раб.позиции ");
 MmiGotoxy(0,i1++); MmiPrintf("Консоль не в раб.позиции ");
         if(i1 >= n_mmi_str) return;
         break;
+
+//23.02.2021 YN
+      case FILTER:
+MmiGotoxy(0,i1++); MmiPrintf("   Система не заполнена  ");
+        if(i1 >= n_mmi_str) return;
+        break;
+////////////////
+
      }
     }
     if(itmp & MVD_cfg )
@@ -2475,6 +2505,9 @@ char *list1_dsr[]={
 "P-до смещение,  МПа",      //169
 "P-посл пол.шкала,МПа",     //170
 "P-посл смещение, МПа",     //171
+//23.02.2021 YN
+"Сгн.'Фильтр' N вх.",      //172
+"Сгн.'Фильтр' фл.инв",     //173
 "",
 };
 //-------------------------------
@@ -2831,8 +2864,18 @@ m_120p:
 //NOW
                MmiGotoxy(0,10);  MmiPrintf("Температура :%7.2f C      ",s_MVD[0].TempR);
                MmiGotoxy(0,11);  MmiPrintf("Давление    :%7.4f МПа    ",s_MVD[0].Press);
-               MmiGotoxy(0,12);  MmiPrintf("Давл.до ф-ра:%7.4f МПа    ",P_before);
-               MmiGotoxy(0,13);  MmiPrintf("Д.после ф-ра:%7.4f МПа    ",P_after);
+
+               if(Filter_for_slave) 
+               {
+                MmiGotoxy(0,12);  MmiPrintf(" Внимание! Засорение фильтра. ");
+                MmiGotoxy(0,13);  MmiPrintf("   Перепад : %7.4f МПа    ",P_diff);
+                
+               }
+               else
+               {
+                MmiGotoxy(0,12);  MmiPrintf("Давл.до ф-ра:%7.4f МПа    ",P_before);
+                MmiGotoxy(0,13);  MmiPrintf("Д.после ф-ра:%7.4f МПа    ",P_after);
+               }
 
 
             }
@@ -5360,6 +5403,14 @@ m220:
        MmiPuts("1");
      else
        MmiPuts("0");
+
+//23.02.2021 YN
+      MmiGotoxy(23,6); MmiPuts("ФИЛЬТР");
+     if(FILTER_FULL)
+       MmiPuts("1");
+     else
+       MmiPuts("0");
+///////////////
 
 //-------------------
      MmiGotoxy(0 ,8); MmiPuts("СТАРТ.Н=");

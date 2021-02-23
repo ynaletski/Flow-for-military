@@ -559,7 +559,12 @@ struct eee_dat EE_Dat[]=
 &fict_ftmp,sizeof( fict_ftmp ),
 &fict_ftmp,sizeof( fict_ftmp ),
 &fict_ftmp,sizeof( fict_ftmp ),
-&fict_ftmp,sizeof( fict_ftmp ),
+
+
+//23.02.2021 YN was: &fict_ftmp,sizeof( fict_ftmp ),
+&num_in16   ,sizeof(num_in16  ),
+&mski_inp16  ,sizeof(mski_inp16  ),
+////////////////////////////////////////////////////
 
 
 //15.02.2021 YN

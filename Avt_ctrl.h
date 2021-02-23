@@ -12,7 +12,9 @@
 
 
 #define KOL_INP (38)
-#define KOL_D_INP (15)
+//23.02.2021 YN was: KOL_D_INP (15)
+#define KOL_D_INP (16)
+
 //     1  2  3 4 5  6  7  8  9  10  11  12
 // MKS 2 11 14 1 0 12 13  4 11   5   0   3 1
 
@@ -34,9 +36,14 @@
 #define IN_CLS_L   f_ik(14)
 #define IN_CLS_H   f_ik(15)
 
+//23.02.2021 YN
+#define FILTER_FULL f_ik(16)
+
 
 #define INP_MSK_OK_v   (0x23b)
-#define INP_MSK_OK_v_L (0x28a)
+
+//23.02.2021 YN was: INP_MSK_OK_v_L (0x28a)
+#define INP_MSK_OK_v_L (0x2ca)
 
 #define UZA_E    2
 #define LVL_E    3
@@ -45,6 +52,9 @@
 #define TRAP_E   7
 #define ID_E     8
 #define STOP_H   9
+
+//23.02.2021 YN 
+#define FILTER 4
 
 #define OUT1 msk_int[num_out1]
 #define OUT2 msk_int[num_out2]
@@ -196,6 +206,10 @@ extern int num_in9 ,num_in10 ;
 extern int num_in11,num_in12 ;
 extern int num_in13,num_in14 ;
 extern int num_in15 ;
+
+//23.02.2021 YN
+extern int num_in16;
+
 void f_var_i();
 
 extern unsigned int INP_MSK_OK_L;
@@ -212,5 +226,10 @@ void f_tst(int ii);
 void f_tst1(int ii);
 void f_tst2(int ii);
 extern int fl_GO_t;
+
+extern int *num_pnt[];
+extern void *p_ik[];
+extern int msk_ik[];
+extern int  iv_msk[] ;
 
 
