@@ -361,6 +361,11 @@ float *list_Slv_flt[]={
 #endif
 &s_MVD[0].PressG,    // 36 F1072
 
+//15.02.2021 YN
+&P_before,           // 37 F1074
+&P_after,            // 38 F1076
+&P_diff,             // 39 F1078
+ 
 NULL
 
 };
